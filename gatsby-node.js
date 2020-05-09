@@ -38,26 +38,16 @@ const createPages = ({actions, graphql}) => {
 
     const posts = res.data.allMarkdownRemark.edges
 
-    // posts.map(({node}) =>
-    //   createPage({
-    //     path: node.fields.slug,
-    //     component: singlePostTemplate,
-    //     context: {
-    //       // Passing slug for template to use to get post
-    //       slug: node.fields.slug,
-    //     },
-    //   }),
-    //)
-
-    posts.forEach(({node}) => {
+    posts.map(({node}) =>
       createPage({
         path: node.fields.slug,
         component: singlePostTemplate,
         context: {
+          // Passing slug for template to use to get post
           slug: node.fields.slug,
         },
-      })
-    })
+      }),
+    )
   })
 }
 
