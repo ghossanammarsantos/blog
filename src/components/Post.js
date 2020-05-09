@@ -11,14 +11,14 @@ import {
 import Img from 'gatsby-image'
 import {slugify} from '../utils/utitlity'
 
-const Post = ({title, author, path, date, body, image, tags}) => (
+const Post = ({title, author, slug, date, body, image, tags}) => (
   <Card>
-    <Link to={path}>
+    <Link to={slug}>
       <Img className="card-image-top" fluid={image}></Img>
     </Link>
     <CardBody>
       <CardTitle>
-        <Link to={path}>{title}</Link>
+        <Link to={slug}>{title}</Link>
       </CardTitle>
       <CardSubtitle>
         <span className="text-info">{date}</span> by{' '}
@@ -36,7 +36,7 @@ const Post = ({title, author, path, date, body, image, tags}) => (
           </li>
         ))}
       </ul>
-      <Link className="btn btn-outline-primary float-right" to={path}>
+      <Link className="btn btn-outline-primary float-right" to={slug}>
         Read more
       </Link>
     </CardBody>
