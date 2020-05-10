@@ -1,10 +1,10 @@
-import React from "react"
+import React from 'react'
 
-import Layout from "../components/layout"
-import SEO from "../components/seo"
+import Layout from '../components/layout'
+import SEO from '../components/seo'
 
 const TagsPage = () => (
-  <Layout>
+  <Layout pageTitle="All Tags">
     <SEO title="Tags" />
     <h1>Tags pages</h1>
   </Layout>
