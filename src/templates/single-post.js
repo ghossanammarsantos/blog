@@ -6,11 +6,20 @@ import Img from 'gatsby-image'
 import {slugify} from '../utils/utitlity'
 import Layout from '../components/layout'
 import authors from '../utils/authors'
+import {DiscussionEmbed} from 'disqus-react'
 
-const SinglePost = ({data}) => {
+const SinglePost = ({data, pageContext}) => {
   const post = data.markdownRemark.frontmatter
-  console.log(post)
   const author = authors.find(author => author.name === post.author)
+
+  const baseUrl = 'https://gatsbytutorial.co.uk/'
+
+  const disqusShortname = 'abdoerrahiem'
+  const disqusConfig = {
+    identifier: data.markdownRemark.id,
+    title: post.title,
+    url: baseUrl + pageContext.slug,
+  }
 
   return (
     <Layout
@@ -40,6 +49,48 @@ const SinglePost = ({data}) => {
           </ul>
         </CardBody>
       </Card>
+      <h3 className="text-center">Share this post</h3>
+      <div className="text-center social-share-links">
+        <ul>
+          <li>
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=${baseUrl}${pageContext.slug}`}
+              className="facebook"
+              target="_blank"
+              rel="noopener noreferrer">
+              <i className="fab fa-facebook-f fa-2x" />
+            </a>
+          </li>
+          <li>
+            <a
+              href={`https://www.twitter.com/share?url=${baseUrl}${pageContext.slug}&text=${post.title}&viatwitterHandle`}
+              className="twitter"
+              target="_blank"
+              rel="noopener noreferrer">
+              <i className="fab fa-twitter fa-2x" />
+            </a>
+          </li>
+          <li>
+            <a
+              href={`https://plus.google.com/share?url=${baseUrl}${pageContext.slug}`}
+              className="google"
+              target="_blank"
+              rel="noopener noreferrer">
+              <i className="fab fa-google fa-2x" />
+            </a>
+          </li>
+          <li>
+            <a
+              href={`https://www.linkedin.com/shareArticle?url=${baseUrl}${pageContext.slug}`}
+              className="linkedin"
+              target="_blank"
+              rel="noopener noreferrer">
+              <i className="fab fa-linkedin fa-2x" />
+            </a>
+          </li>
+        </ul>
+      </div>
+      <DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
     </Layout>
   )
 }
