@@ -1,7 +1,8 @@
 const {slugify} = require('./src/utils/utitlity')
 const path = require('path')
+const authors = require('./src/utils/authors')
 
-const onCreateNode = ({node, actions}) => {
+exports.onCreateNode = ({node, actions}) => {
   const {createNodeField} = actions
 
   if (node.internal.type === 'MarkdownRemark') {
@@ -14,7 +15,7 @@ const onCreateNode = ({node, actions}) => {
   }
 }
 
-const createPages = ({actions, graphql}) => {
+exports.createPages = ({actions, graphql}) => {
   const {createPage} = actions
   const singlePostTemplate = path.resolve('src/templates/single-post.js')
 
@@ -38,17 +39,17 @@ const createPages = ({actions, graphql}) => {
 
     const posts = res.data.allMarkdownRemark.edges
 
-    posts.map(({node}) =>
+    posts.forEach(({node}) => {
       createPage({
         path: node.fields.slug,
         component: singlePostTemplate,
         context: {
-          // Passing slug for template to use to get post
           slug: node.fields.slug,
+          imageUrl: authors.find(
+            author => author.name === node.frontmatter.author,
+          ).imageUrl,
         },
-      }),
-    )
+      })
+    })
   })
 }
-
-module.exports = {onCreateNode, createPages}

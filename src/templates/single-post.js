@@ -5,17 +5,23 @@ import {Card, CardBody, CardSubtitle, Badge} from 'reactstrap'
 import Img from 'gatsby-image'
 import {slugify} from '../utils/utitlity'
 import Layout from '../components/layout'
+import authors from '../utils/authors'
 
 const SinglePost = ({data}) => {
   const post = data.markdownRemark.frontmatter
+  console.log(post)
+  const author = authors.find(author => author.name === post.author)
 
   return (
-    <Layout pageTitle={post.title}>
+    <Layout
+      pageTitle={post.title}
+      postAuthor={author}
+      authorImageFluid={data.file.childImageSharp.fluid}>
       <SEO title={post.title} />
       <Card>
         <Img
           className="card-image-top"
-          fluid={post.image.childImageSharp.fluid}
+          fluid={post.imageUrl.childImageSharp.fluid}
         />
         <CardBody>
           <CardSubtitle>
@@ -39,7 +45,7 @@ const SinglePost = ({data}) => {
 }
 
 export const postQuery = graphql`
-  query blogPostBySlug($slug: String!) {
+  query blogPostBySlug($slug: String!, $imageUrl: String!) {
     markdownRemark(fields: {slug: {eq: $slug}}) {
       id
       html
@@ -48,12 +54,19 @@ export const postQuery = graphql`
         author
         date(formatString: "MMM Do YYYY")
         tags
-        image {
+        imageUrl {
           childImageSharp {
             fluid(maxWidth: 700, maxHeight: 500) {
               ...GatsbyImageSharpFluid
             }
           }
+        }
+      }
+    }
+    file(relativePath: {eq: $imageUrl}) {
+      childImageSharp {
+        fluid(maxWidth: 300, maxHeight: 300) {
+          ...GatsbyImageSharpFluid
         }
       }
     }

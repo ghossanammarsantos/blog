@@ -19,7 +19,7 @@ const IndexPage = () => (
               author={node.frontmatter.author}
               body={node.excerpt}
               slug={node.fields.slug}
-              image={node.frontmatter.image.childImageSharp.fluid}
+              image={node.frontmatter.imageUrl.childImageSharp.fluid}
               tags={node.frontmatter.tags}
             />
           ))}
@@ -40,7 +40,7 @@ const indexQuery = graphql`
             date(formatString: "MMM Do YYYY")
             author
             tags
-            image {
+            imageUrl {
               childImageSharp {
                 fluid(maxWidth: 500, maxHeight: 300) {
                   ...GatsbyImageSharpFluid
