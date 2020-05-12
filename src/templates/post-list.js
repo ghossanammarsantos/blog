@@ -1,18 +1,15 @@
 import React from 'react'
 import Layout from '../components/layout'
-import {graphql} from 'gatsby'
 import Post from '../components/Post'
+import {graphql} from 'gatsby'
 
-const tagPosts = ({data, pageContext}) => {
-  const {tag} = pageContext
-  const {totalCount} = data.allMarkdownRemark
-  const pageHeader = `${totalCount} post${
-    totalCount > 1 ? 's' : ''
-  } tagged with "${tag}"`
+const postList = ({data, pageContext}) => {
+  const posts = data.allMarkdownRemark.edges
+  const {currentPage} = pageContext
 
   return (
-    <Layout pageTitle={pageHeader}>
-      {data.allMarkdownRemark.edges.map(({node}) => (
+    <Layout pageTitle={`Page : ${currentPage}`}>
+      {posts.map(({node}) => (
         <Post
           key={node.id}
           slug={node.fields.slug}
@@ -28,13 +25,13 @@ const tagPosts = ({data, pageContext}) => {
   )
 }
 
-export const tagQuery = graphql`
-  query($tag: String!) {
+export const postListQuery = graphql`
+  query($skip: Int!, $limit: Int!) {
     allMarkdownRemark(
       sort: {fields: [frontmatter___date], order: DESC}
-      filter: {frontmatter: {tags: {in: [$tag]}}}
+      limit: $limit
+      skip: $skip
     ) {
-      totalCount
       edges {
         node {
           id
@@ -61,4 +58,4 @@ export const tagQuery = graphql`
   }
 `
 
-export default tagPosts
+export default postList
