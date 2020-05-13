@@ -100,9 +100,9 @@ exports.createPages = ({actions, graphql}) => {
     })
 
     const postsPerpage = 4
-    const numberOfpages = Math.ceil(posts.length / postsPerpage)
+    const numberOfPages = Math.ceil(posts.length / postsPerpage)
 
-    Array.from({length: numberOfpages}).forEach((_, index) => {
+    Array.from({length: numberOfPages}).forEach((_, index) => {
       const isFirstPage = index === 0
       const currentPage = index + 1
 
@@ -116,6 +116,7 @@ exports.createPages = ({actions, graphql}) => {
           limit: postsPerpage,
           skip: index * postsPerpage,
           currentPage,
+          numberOfPages,
         },
       })
     })
